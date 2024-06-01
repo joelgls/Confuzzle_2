@@ -1,0 +1,173 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="Styles/profile.css">
+  <title>Register</title>
+  <link rel="shortcut icon" type="image/jpg" href="Assets/favicon.png"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="Styles/styles.css" rel="stylesheet">
+</head>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="index.html">Confuzzle</a>
+          </div>
+          
+          <div class="nav navbar-nav navbar-right">
+            <a class="navbar-brand float-right" href="Dashboard.html">Dashboard</a>
+          </div>
+        </div>
+             
+
+  </nav>
+
+
+
+</header>
+<body>
+
+  <section class="vh-100 d-flex justify-content-center align-items-center" style="background-color: #eee;">
+    <div class="card text-black" style="border-radius: 15px;">
+      <div class="card-body p-2">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="text-center mb-2">
+              <img src="Assets/confuzzle-high-res-logo.png" class="img-fluid" alt="Image">
+            </div>  
+          </div>
+          <div class="col-md-6">
+            <h1 class="text-center signup-heading fw-bold mb-2">Sign up</h1>
+
+            <form id="signup-form" class="mx-2" action="Dashboard.html">
+
+              <div class="mb-3 row align-items-center">
+                <label for="username" class="col-sm-3 col-form-label">Username</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control form-control-sm" id="username" name="username" placeholder="Your Username" required minlength="3">
+                  <div id="usernameMessage" class="invalid-feedback"></div> <!-- Added error message element -->
+                </div>
+              </div>
+
+
+              <div class="mb-3 row align-items-center">
+                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                  <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="Your Email" required>
+                </div>
+              </div>
+
+              <div class="mb-3 row align-items-center">
+                <label for="password" class="col-sm-3 col-form-label">Password</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control form-control-sm" id="password" name="password" placeholder="Password" required>
+                  <div id="passwordMessage" class="invalid-feedback"></div> <!-- Added error message element -->
+                </div>
+              </div>
+
+              <div class="mb-3 row align-items-center">
+                <label for="password2" class="col-sm-3 col-form-label">Repeat Password</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control form-control-sm" id="password2" name="password2" placeholder="Repeat your password" required>
+                  <div id="password-match-error" class="invalid-feedback" style="display: none;">Passwords do not match</div>
+                </div>
+              </div>
+
+              <div class="mb-3 form-check d-flex justify-content-center">
+                <label class="form-check-label text-center">
+                  <input class="form-check-input me-2" type="checkbox" value="" id="form" required>
+                  I agree all statements in <a href="Terms.html" target="_blank">Terms of service</a>
+                </label>
+              </div>
+
+              <div class="text-center mb-2">
+                <button type="button" class="btn btn-primary btn-sm" onclick="validPassword()">Registar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!---Por aqui um modal para os terms os servico-->>
+
+
+
+<footer>
+  <div class="row">
+      <div class="col-md-12">
+        <p>&copy; 2024 Your Website. All rights reserved to Confuzzle</p>
+      </div>
+  </div>
+</footer>
+
+
+  <script src="Styles/script.js"></script>
+
+  <script type="text/JavaScript">
+    function validPassword(){
+        var password1 = document.getElementById("pswd").value;
+        var password2 = document.getElementById("coPwd").value;
+
+        // Validate through RegularExpression
+        var passwordcheck1 =/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+
+        if (!passwordcheck1.test(password1)){
+           alert("Wrong password");
+        return false;
+        }
+        if(!password1.match(password2)){
+            alert("The password and confirmation are not the same");
+        return false;
+        }
+
+        newUser();
+        return true;
+       }
+
+  </script>
+
+  <script>
+    const newUser = async () => {
+    var dados = {
+      name: document.getElementById("nome").value,  
+      email: document.getElementById("email").value,
+      password: document.getElementById("pswd").value,
+      counter: document.getElementById("counter").value
+    };
+    console.log(dados);
+    fetch("http://localhost:4242/api/pgs/auth/signup", {
+      method: "POST",
+      headers: {"Content-Type": "application/json",},
+      body: JSON.stringify(dados),
+    })
+      .then((response) => {
+        // Verifica se a resposta foi bem sucedida
+        if (!response.ok) {
+          throw new Error("Error colecting data");
+        }
+        // Converte a resposta para JSON
+        return response.json();
+      })
+      .then((data) => {
+        // Faz algo com os dados
+        alert("The " + dados.name + " was added with success!");
+      })
+      .catch((error) => {
+        // Captura qualquer erro de rede ou tratamento de erro
+        alert("Error:", error);
+      });
+    };
+
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</html>   
+
+</body>
+</html>

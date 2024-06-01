@@ -1,0 +1,13 @@
+.espaco{
+
+    margin-top: 1%;
+
+}
+
+.container-bg {
+    background-color: #f0f0f0; 
+    padding: 20px; 
+    border-radius: 10px; 
+    border: 2px solid black; 
+    display: inline-block; 
+}
