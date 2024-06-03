@@ -5,9 +5,9 @@ const prisma = new PrismaClient()
 exports.testConnection = async (req, res) => {
     try {
         await prisma.$connect();
-        res.send('Ligação bem-sucedida com o PostgreSQL!');
+        res.send('Connection to PostgreSQL with success!!');
       } catch (error) {
-        res.send('Erro ao conectar ao PostgreSQL:', error);
+        res.send('Error trying to connect PostgreSQL:', error);
       } finally {
         await prisma.$disconnect();
       }
@@ -68,8 +68,8 @@ exports.update = async (req, res) => {
   const { id, nome, email, password, counter } = req.body;
 
   try {
-      //procurar o topico com id e atualizar os dados
-      const topic = await prisma.Topic.update({
+      //procurar o user com id e atualizar os dados
+      const topic = await prisma.User.update({
           where: {
               id: id*1,
           },

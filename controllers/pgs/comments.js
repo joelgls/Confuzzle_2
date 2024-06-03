@@ -5,9 +5,9 @@ const prisma = new PrismaClient()
 exports.testConnection = async (req, res) => {
     try {
         await prisma.$connect();
-        res.send('Ligação bem-sucedida com o PostgreSQL!');
+        res.send('Connection to PostgreSQL with success!');
       } catch (error) {
-        res.send('Erro ao conectar ao PostgreSQL:', error);
+        res.send('Error trying to connect PostgreSQL:', error);
       } finally {
         await prisma.$disconnect();
       }

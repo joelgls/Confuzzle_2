@@ -116,7 +116,7 @@
                         <td>${artigo.description}</td>
                         <td>${artigo.type}</td>
                         <td>
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#upModal" onclick="EditComment(${artigo.id})"><i class="fa fa-pencil"></i> Edit</button>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#upModal" onclick="editComment(${artigo.id})"><i class="fa fa-pencil"></i> Edit</button>
                             <button type='button' class='btn btn-danger' onclick="deleteComment(${artigo.id})"><i class="fa fa-trash"></i> Delete</button>
                         </td>
                     </tr>
@@ -186,7 +186,7 @@
           });
       };
 
-      const EditComment = async (id) => {
+      const editComment = async (id) => {
         //alert("aaaa")
         const response = await fetch("http://localhost:4242/api/pgs/comments/" + id);
         //alert("http://localhost:4242/api/pgs/carros/" + id);

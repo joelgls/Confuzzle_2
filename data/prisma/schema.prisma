@@ -17,7 +17,7 @@ model Topic {
   id             Int     @id @default(autoincrement())
   title          String  @db.VarChar(255)
   description    String  @db.VarChar(255)
-  comments_id    Int
+  comments_id    Int    
   user_id        Int
 }
 
