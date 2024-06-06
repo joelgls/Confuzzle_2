@@ -29,7 +29,7 @@ exports.getById = async (req, res) => {
 //cria um user
 exports.create = async (req, res) => {
     //obter o user pelas características enviadas
-    const {id, nome, email, password, counter} = req.body;
+    const {id, name, email, password} = req.body;
      //ler o ficheiro local
      const datajson = fs.readFileSync("data/local/data.json", "utf-8");
      //parse do json
@@ -46,7 +46,7 @@ exports.create = async (req, res) => {
 //atualiza o user
 exports.update = async (req, res) => {
     //obter o user pelas características enviadas
-    const {id, nome, email, password, counter} = req.body;
+    const {id, nme, email, password} = req.body;
      //ler o ficheiro local
      const datajson = fs.readFileSync("data/local/data.json", "utf-8");
      //parse do json
@@ -55,15 +55,15 @@ exports.update = async (req, res) => {
     const user = data.user.find(user => user.id == id);
     //atualizar as caraterísticas
     user.id = id;
-    user.nome = nome;
+    user.name = name;
     user.email = email;
     user.password = password;
-    user.counter = counter;
+
 
     //actualizar no ficheiro json
     fs.writeFileSync('data/local/data.json', JSON.stringify(data));
     //devolver o user alterado
-    return res.send({id, nome, email, password, counter});
+    return res.send({id, name, email, password});
 }
 
 

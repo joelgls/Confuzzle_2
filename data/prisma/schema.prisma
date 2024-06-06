@@ -17,7 +17,6 @@ model Topic {
   id             Int     @id @default(autoincrement())
   title          String  @db.VarChar(255)
   description    String  @db.VarChar(255)
-  comments_id    Int    
   user_id        Int
 }
 
@@ -26,5 +25,4 @@ model User {
   name           String  @db.VarChar(255)
   email          String  @db.VarChar(255)
   password       String  @db.VarChar(255)
-  counter        Int
 }

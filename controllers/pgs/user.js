@@ -45,15 +45,14 @@ exports.getById = async (req, res) => {
 //criar um user
 exports.create = async (req, res) => {
   //apanhar os dados enviados
-  const {nome, email, password, counter } = req.body;
+  const {name, email, password } = req.body;
   try {
       //criar um novo user
-      const carro = await prisma.User.create({
+      const user = await prisma.User.create({
           data: {
-              nome: nome,
+              name: name,
               email: email,
               password: password,
-              counter: counter
           },
       })
       //devolve o user criado
@@ -65,7 +64,7 @@ exports.create = async (req, res) => {
 
 //Atualizar um user
 exports.update = async (req, res) => {
-  const { id, nome, email, password, counter } = req.body;
+  const { id, name, email, password} = req.body;
 
   try {
       //procurar o user com id e atualizar os dados
@@ -74,10 +73,9 @@ exports.update = async (req, res) => {
               id: id*1,
           },
           data: {
-              nome: nome,
+              name: name,
               email: email,
               password: password,
-              counter: counter
           },
       })
       //devolve o user atualizado

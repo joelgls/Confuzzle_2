@@ -54,10 +54,6 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="id" class="form-label">Id</label>
-                <input type="text" class="form-control" id="mId" name="id" />
-              </div>
-              <div class="mb-3">
                 <label for="Title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="mTitle" name="Title" />
               </div>
@@ -65,14 +61,7 @@
                 <label for="Description" class="form-label">Description</label>
                 <input type="text" class="form-control" id="mDescription" name="Description" />
               </div>
-              <div class="mb-3">
-                <label for="Comments_id" class="form-label">Comments_id</label>
-                <input type="text" class="form-control" id="mComments_id" name="Comments_id" />
-              </div>
-              <div class="mb-3">
-                <label for="User_id" class="form-label">User_id</label>
-                <input type="text" class="form-control" id="mUser_id" name="User_id" />
-              </div>
+
               <button type="button" class="btn btn-primary" onclick="newTopic()"><i class="fa-solid fa-floppy-disk"></i> Send</button>
               <button type="reset" class="btn btn-success"><i class="fa-solid fa-shower"></i> Clear</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-door-closed"></i> Close</button>
@@ -90,10 +79,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">
-                <label for="id" class="form-label">Id</label>
-                <input type="text" class="form-control" id="mId" name="id" />
-              </div>
+
               <div class="mb-3">
                 <label for="Title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="mTitle" name="Title" />
@@ -101,14 +87,6 @@
               <div class="mb-3">
                 <label for="Description" class="form-label">Description</label>
                 <input type="text" class="form-control" id="mDescription" name="Description" />
-              </div>
-              <div class="mb-3">
-                <label for="Comments_id" class="form-label">Comments_id</label>
-                <input type="text" class="form-control" id="mComments_id" name="Comments_id" />
-              </div>
-              <div class="mb-3">
-                <label for="User_id" class="form-label">User_id</label>
-                <input type="text" class="form-control" id="mUser_id" name="User_id" />
               </div>
               <button type="button" class="btn btn-primary" onclick="updateTopic()"><i class="fa-solid fa-floppy-disk"></i> Send</button>
               <button type="reset" class="btn btn-success"><i class="fa-solid fa-shower"></i> Clear</button>
@@ -151,11 +129,9 @@
 
       const newTopic = async () => {
         var dados = {
-          id: document.getElementById("mId").value,
           title: document.getElementById("mTitle").value,
           description: document.getElementById("mDescription").value,
-          comments_id: document.getElementById("mComments_id").value,
-          user_id: document.getElementById("mUser_id").value,
+          user_id: 3, //TODO
         };
         //alert(dados.Marca) //alert(dados.Detalhes) //alert(dados.Foto)
         fetch("http://localhost:4242/api/pgs/topic/create", {

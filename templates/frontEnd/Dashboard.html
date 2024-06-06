@@ -43,36 +43,31 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <table class="table">
+            <table id="crudTable" class="table table-bordered">
                 <thead>
-                    <tr>
-                        <th scope="col">Número</th>
-                        <th scope="col">Ideia</th>
-                        <th scope="col">Discussão</th>
+                  <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>User</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Desenvolvimento de um jogo educacional para ensinar programação para crianças</td>
-                        <td><a href="Discussion.html" class="discussion-link">Discussion</a></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Ideia 2</td>
-                        <td><a href="Discussion.html" class="discussion-link">Discussion</a></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2"></td>
-                        <td></td>
-                    </tr>
+                <tbody id="cardTopic">
+                  <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>User</th>
+                    <td>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#upModal"><i class="fa fa-pencil"></i> Edit</button>
+                      <button type="button" class="btn btn-primary"><i class="fa fa-trash"></i> Delete</button>
+                    </td>
+                  </tr>
                 </tbody>
-            </table>
+              </table>
             <div class="text-center">
-                <a href="insert.html" class="btn btn-primary">Give your idea</a>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa fa-solid fa-plus"></i> Give me your ideia</button>
+
             </div>
         </div>
     </div>
@@ -88,6 +83,198 @@
     </div>
 </footer>
 
+
+  <!-- Pagination -->
+  <nav aria-label="Page navigation example">
+    <ul id="pagination" class="pagination justify-content-center"></ul>
+  </nav>
+
+  <!-- Add Modal -->
+  <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add Topic</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="Title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="mTitle" name="Title" />
+          </div>
+          <div class="mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="mDescription" name="Description" />
+          </div>
+
+          <button type="button" class="btn btn-primary" onclick="newTopic()"><i class="fa-solid fa-floppy-disk"></i> Send</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-door-closed"></i> Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- update Modal -->
+  <div class="modal fade" id="upModal" tabindex="-1" aria-labelledby="upModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Change Topic</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label for="Title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="mTitle" name="Title" />
+          </div>
+          <div class="mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="mDescription" name="Description" />
+          </div>
+          <button type="button" class="btn btn-primary" onclick="updateTopic()"><i class="fa-solid fa-floppy-disk"></i> Send</button>
+          <button type="reset" class="btn btn-success"><i class="fa-solid fa-shower"></i> Clear</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-door-closed"></i> Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- Add custom JS -->
+<script>
+  const listTopic = async () => {
+    let strHtml = ``;
+    //alert("aaaa");
+    const response = await fetch("http://localhost:4242/api/pgs/topic");
+    const lv = await response.json();
+    for (const artigo of lv) {
+      strHtml += `
+                <tr>
+                    <td>${artigo.id}</td>
+                    <td>${artigo.title}</td>
+                    <td>${artigo.description}</td>
+                    <td>${artigo.user_id}</td>
+                    <td>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#upModal" onclick="EditTopic(${artigo.id})"><i class="fa fa-pencil"></i> Edit</button>
+                        <button type='button' class='btn btn-primary' onclick="deleteTopic(${artigo.id})"><i class="fa fa-trash"></i> Delete</button>
+                    </td>
+                </tr>
+                    `;
+    }
+    document.getElementById("cardTopic").innerHTML = strHtml;
+  };
+
+  listTopic();
+
+  const newTopic = async () => {
+    var dados = {
+      title: document.getElementById("mTitle").value,
+      description: document.getElementById("mDescription").value,
+      user_id: 3, //TODO
+    };
+    //alert(dados.Marca) //alert(dados.Detalhes) //alert(dados.Foto)
+    fetch("http://localhost:4242/api/pgs/topic/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    })
+      .then((response) => {
+        // Verifica se a resposta foi bem sucedida
+        if (!response.ok) {
+          throw new Error("Problem colecting data");
+        }
+        // Converte a resposta para JSON
+        return response.json();
+      })
+      .then((data) => {
+        // Faz algo com os dados
+        //console.log(data);
+        resposta = "The topic with the follow title: " + dados.title + " was added with success!";
+        alert(resposta);
+        listTopic();
+      })
+      .catch((error) => {
+        // Captura qualquer erro de rede ou tratamento de erro
+        console.error("Error detected:", error);
+      });
+  };
+
+  const deleteTopic = async (id) => {
+    fetch("http://localhost:4242/api/pgs/topic/delete/" + id, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
+        // Verifica se a resposta foi bem sucedida
+        if (!response.ok) {
+          throw new Error("Error colecting data!");
+        }
+        // Converte a resposta para JSON
+        return response;
+      })
+      .then((data) => {
+        // Faz algo com os dados
+        //console.log(data);
+        resposta = "The topic was deletd with success!";
+        alert(resposta);
+        listTopic();
+      })
+      .catch((error) => {
+        // Captura qualquer erro de rede ou tratamento de erro
+        console.error("Problem colecting data!", error);
+      });
+  };
+
+  const EditTopic = async (id) => {
+    //alert("aaaa")
+    const response = await fetch("http://localhost:4242/api/pgs/topic/" + id);
+    //alert("http://localhost:4242/api/pgs/carros/" + id);
+    const artigo = await response.json();
+    console.log(artigo);
+    document.getElementById("muId").value = artigo.id;
+    document.getElementById("muTitle").value = artigo.title;
+    document.getElementById("muDescription").value = artigo.description;
+    document.getElementById("muUser_id").value = artigo.user_id;
+  };
+
+  const updateTopic = async () => {
+    var dados = {
+      id: document.getElementById("muId").value,
+      title: document.getElementById("muTitle").value,
+      description: document.getElementById("muDescription").value,
+      user_id: document.getElementById("muUser_id").value,
+      
+    };
+    fetch("http://localhost:4242/api/pgs/topic/update", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    })
+      .then((response) => {
+        // Verifica se a resposta foi bem sucedida
+        if (!response.ok) {
+          throw new Error("Problem colecting data!");
+        }
+        // Converte a resposta para JSON
+        return response.json();
+      })
+      .then((data) => {
+        // Faz algo com os dados
+        //console.log(data);
+        resposta = "The topic with the title " + dados.title + " was added with success!";
+        alert(resposta);
+        listTopic();
+      })
+      .catch((error) => {
+        // Captura qualquer erro de rede ou tratamento de erro
+        console.error("Problem colecting data!", error);
+      });
+  };
+</script>
 
 
 </body>

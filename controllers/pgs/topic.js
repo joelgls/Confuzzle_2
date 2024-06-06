@@ -27,7 +27,7 @@ exports.getAll = async (req, res) => {
 //Devolve um topico indicado por um id
 exports.getById = async (req, res) => {
   //apanha o id enviado
-  const id = req.params.id*1;
+  const id = Number(req.params.id);
   try {
       //procura o topico com o id
       const response = await prisma.Topic.findUnique({
@@ -45,15 +45,14 @@ exports.getById = async (req, res) => {
 //criar um topico
 exports.create = async (req, res) => {
   //apanhar os dados enviados
-  const {title, description, comments_id, user_id} = req.body;
+  const {title, description, user_id} = req.body;
   try {
       //criar um novo topico
       const topic = await prisma.Topic.create({
           data: {
               title: title,
               description: description,
-              comments_id: comments_id,
-              user_id: user_id
+              user_id: Number(user_id)
           },
       })
       //devolve o topico criado
@@ -65,7 +64,7 @@ exports.create = async (req, res) => {
 
 //Atualizar um topico
 exports.update = async (req, res) => {
-  const { id, title, description, comments_id, user_id } = req.body;
+  const { id, title, description, user_id } = req.body;
 
   try {
       //procurar o topico com id e atualizar os dados
@@ -76,7 +75,6 @@ exports.update = async (req, res) => {
           data: {
               title: title,
               description: description,
-              comments_id: comments_id,
               user_id: user_id
           },
       })
