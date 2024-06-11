@@ -20,7 +20,8 @@ app.use('/bo/', privadoRouter);
 app.use('/api/local/', routerLocal);
 app.use('/api/pgs/', routerPgs);
 
-const port = process.env.SERVER_PORT || 8080;
-app.listen(port, () => {
-    console.log('Express server listening on port', port)
+const port = process.env.SERVER_PORT || 4242; // Define the server port, default to 4242 if not specified
+app.listen(port, () => { // Start the express server
+    console.log('Express server listening on port', port); // Log server listening message
+    console.log('Port open', port); // Log port open message
 });

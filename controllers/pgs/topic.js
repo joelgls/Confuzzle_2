@@ -24,6 +24,35 @@ exports.getAll = async (req, res) => {
   }
 }
 
+//Devolve um topico indicado por um titulo
+exports.getByTitle = async (req, res) => {
+    //apanha o titulo enviado
+    const title = req.params.title;
+    try {
+        const response = await prisma.Topic.findMany({
+            where: {
+                OR: [
+                    {
+                        title: {
+                            contains: title,
+                        },
+                    },
+                    {
+                        description: {
+                            contains: title,
+                        },
+                    },
+                ],
+            },
+        });       //devolve o(s) topic(s)
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(404).json({ msg: error.message });
+    }
+}
+
+  
+
 //Devolve um topico indicado por um id
 exports.getById = async (req, res) => {
   //apanha o id enviado

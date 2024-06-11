@@ -41,15 +41,21 @@
         <div class="col-md-12 position-relative text-center" style="background-image: url('Assets/confuzzle-high-res-logo_Copia.png'); background-position: center center;background-repeat: no-repeat; background-size: 90% 90% ">
             <div class="form-container d-flex justify-content-center">
 
-                <form>
+                <form id="searchForm">
                     <div class="conteudo">
                         <h5>Having problems choosing your project?</h5>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="text" name="text" placeholder="Put where your idea for the project" class="form-control" required>
-                        <button type="submit" class="btn btn-dark">Search</button>
+                        <input type="text" id="searchInput" name="text" placeholder="Put where your idea for the project" class="form-control" required>
+                        <button type="submit" class="btn btn-dark" id="searchButton">Search</button>
                     </div>
                 </form>
+
+                <div id="resultsContainer" class="mt-4">
+                    
+                    
+                </div>
+            
             </div>
         </div>
     </div>
@@ -61,11 +67,78 @@
             </div>
         </div>
     </footer>
+   
+
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            console.log("DOM fully loaded and parsed");
     
+            document.getElementById('searchForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                // Get the search query from the input field
+                const title = document.getElementById('searchInput').value;
+    
+                // Make the search request to the backend API
+                fetch(`http://localhost:4242/api/pgs/topic/search/${encodeURIComponent(title)}`)
+    .then(response => response.json())
+    .then(data => {
+        // Handle the search results
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.innerHTML = ''; // Limpar resultados anteriores
+
+        if (data && data.length > 0) {
+            // Ordenar os resultados por algum critério (por exemplo, título)
+            data.sort((a, b) => a.title.localeCompare(b.title));
+
+            // Exibir os resultados como cartões
+            data.forEach(result => {
+                const card = createCard(result);
+                resultsContainer.appendChild(card);
+            });
+        } else {
+            // Handle case when no results are found
+            resultsContainer.textContent = 'No results found.';
+        }
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error fetching data:', error);
+    });
+
+// Função para criar um cartão para cada resultado
+function createCard(result) {
+    const card = document.createElement('div');
+    card.classList.add('card'); // Adicionar classe de estilo de cartão
+
+    // Título do cartão
+    const title = document.createElement('h3');
+    title.textContent = result.title;
+
+    // Descrição do cartão
+    const description = document.createElement('p');
+    description.textContent = result.description;
+
+    // Adicionar título e descrição ao cartão
+    card.appendChild(title);
+    card.appendChild(description);
+
+    return card;
+}
 
 
+    })
+                    .catch(error => {
+                        // Handle errors
+                        console.error('Error fetching data:', error);
+                    });
+            });
 
-
+    </script>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

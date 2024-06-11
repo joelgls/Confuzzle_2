@@ -68,7 +68,7 @@ exports.update = async (req, res) => {
 
   try {
       //procurar o user com id e atualizar os dados
-      const topic = await prisma.User.update({
+      const user = await prisma.User.update({
           where: {
               id: id*1,
           },
@@ -103,3 +103,54 @@ exports.delete = async (req, res) => {
   }
 }
 
+
+// Function to login user
+exports.login = async (req, res) => {
+    // Get the email and password from the request body
+    const { email, password } = req.body;
+
+    try {
+        // Find user by email
+        const user = await prisma.User.findUnique({
+            where: { email: email },
+        });
+
+        if (!user) {
+            return res.status(400).json({ msg: "Invalid credentials" });
+        }
+
+        // Check if the password matches
+        if (password !== user.password) {
+            return res.status(400).json({ msg: "Invalid credentials" });
+        }
+
+        // Return success with user role
+        res.status(200).json({ msg: "Login successful"});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "An error occurred. Please try again later." }); // Send error message with status 500 (Internal Server Error)
+    }
+}
+
+// Function to get user by email
+exports.getUserByEmail = async (req, res) => {
+    // Get the email from the request parameters
+    const userEmail = req.params.email;
+
+    try {
+        // Find user by email
+        const user = await prisma.User.findUnique({
+            where: { email: userEmail },
+        });
+
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" }); // Send error message with status 404 (Not Found)
+        }
+
+        // Return user data with status 200 (OK)
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        res.status(500).json({ msg: "Internal server error" }); // Send error message with status 500 (Internal Server Error)
+    }
+}

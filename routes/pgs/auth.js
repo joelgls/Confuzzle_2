@@ -1,9 +1,8 @@
-const authRouter = require('express').Router();
+const autenticationRouter = require('express').Router();
 const controller = require('../../controllers/pgs/auth');
 
-authRouter.post('/signin', controller.signin);
-authRouter.post('/signup', controller.signup);
+autenticationRouter.post('/signin', controller.signin);
+autenticationRouter.post('/signup', controller.signup);
+autenticationRouter.post('/readToken', controller.readToken);
 
-
-module.exports = authRouter;
-
+module.exports = autenticationRouter;
