@@ -13,6 +13,7 @@ userRouter.put('/update', controller.update); //atualizar um user
 userRouter.delete('/delete/:id', controller.delete); //apagar um user
 
 userRouter.post('/login', controller.login); // Login the user
+
 userRouter.get('/email/:email', controller.getUserByEmail); // Get a user by email
 
 module.exports = userRouter;

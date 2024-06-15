@@ -13,6 +13,8 @@ model Comments {
     type            Boolean 
 }
 
+
+
 model Topic {
   id             Int     @id @default(autoincrement())
   title          String  @db.VarChar(255)
@@ -21,8 +23,9 @@ model Topic {
 }
 
 model User {
-  id             Int     @id @default(autoincrement())
-  name           String  @db.VarChar(255)
-  email          String  @db.VarChar(255)
-  password       String  @db.VarChar(255)
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(255)
+  email     String  @db.VarChar(255) @unique
+  password  String  @db.VarChar(255)
+  isAdmin   Boolean @default(false)
 }

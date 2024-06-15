@@ -81,7 +81,7 @@ exports.create = async (req, res) => {
           data: {
               title: title,
               description: description,
-              user_id: Number(user_id)
+              user_id: user_id,
           },
       })
       //devolve o topico criado
@@ -90,6 +90,22 @@ exports.create = async (req, res) => {
       res.status(400).json({ msg: error.message })
   }
 }
+
+//Devolve todos os topicos de um utilizador
+exports.getAllByUserId = async (req, res) => {
+    const user_id = Number(req.query.user_id); // Extract user_id from query params
+    try {
+      const response = await prisma.Topic.findMany({
+        where: {
+          user_id: user_id,
+        },
+      });
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json({ msg: error.message });
+    }
+  }
+  
 
 //Atualizar um topico
 exports.update = async (req, res) => {

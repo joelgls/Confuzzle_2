@@ -9,7 +9,7 @@ exports.signin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Verificação de entrada
+        // Input validation
         if (!email || !password) {
             return res.status(400).json({ msg: "Email and password are required!" });
         }
@@ -22,13 +22,16 @@ exports.signin = async (req, res) => {
         if (user) {
             console.log("User found:", user);
             
-            // Comparação direta de senhas em texto simples
-            if (password === user.password) {
+            // Password comparison using bcrypt
+            const passwordIsValid = await bcrypt.compare(password, user.password);
+            
+            if (passwordIsValid) {
                 console.log("Password is valid");
                 const payload = {
                     id: user.id,
                     name: user.name,
                     email: user.email,
+                    isAdmin: user.isAdmin, 
                 };
                 console.log('Token Payload:', payload);
 
@@ -49,7 +52,6 @@ exports.signin = async (req, res) => {
         return res.status(500).json({ msg: "Internal server error", error: error.message });
     }
 };
-
 
 
 

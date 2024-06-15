@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs/dist/bcrypt');
 const prisma = new PrismaClient()
 
 //Testa a ligação
@@ -52,7 +53,8 @@ exports.create = async (req, res) => {
           data: {
               name: name,
               email: email,
-              password: password,
+              password: bcrypt.hashSync(password, 8),
+              isAdmin: false,
           },
       })
       //devolve o user criado
@@ -119,8 +121,12 @@ exports.login = async (req, res) => {
             return res.status(400).json({ msg: "Invalid credentials" });
         }
 
-        // Check if the password matches
-        if (password !== user.password) {
+        var passwordIsValid = bcrypt.compareSync(
+            password,
+            user.password
+        );
+
+        if (!passwordIsValid) {
             return res.status(400).json({ msg: "Invalid credentials" });
         }
 

@@ -86,7 +86,7 @@
         // Prepare user data to send to the server
         var user = {
             email: email,
-            password: password
+            password: password,
         };
     
         try {
@@ -101,16 +101,24 @@
             const responseData = await response.json();
     
             if (response.ok) {
+                // Inside the successful login block
+                localStorage.setItem('lastLogin', JSON.stringify({ email: user.email }));
+                
+
                 alert("Login successful!");
                 
                 // Store the token in local storage
                 localStorage.setItem('token', responseData.token);
     
                 // Redirect based on user role
-                if (responseData.name === 'admin') {
-                window.location.href = 'Admin.html';
-                } else {
-                window.location.href = 'index.html';
+                redirectToPage(user);          
+                
+                function redirectToPage(user) {
+                if (user.isAdmin) {
+                window.location.href = "Admin.html";
+                 } else {
+                window.location.href = "index.html";
+                 }
                 }
 
             } else {
@@ -123,6 +131,9 @@
     }
     
       </script>
+
+
+
 
   
     

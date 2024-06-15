@@ -11,6 +11,8 @@ topicRouter.get('/search/:title', controller.getByTitle);// le um topico pelo ti
 topicRouter.post('/create', controller.create); //criar um topico
 topicRouter.put('/update', controller.update); //atualizar um topico
 topicRouter.delete('/delete/:id', controller.delete); //apagar um topico
+topicRouter.get('/user/:user_id', controller.getAllByUserId); // Fetch topics by user_id
+
 
 
 module.exports = topicRouter;
