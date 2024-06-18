@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(express.static('templates/frontEnd'));
+app.use(express.static('templates/FrontEnd'));
 
 app.use('/', publicoRouter);
 app.use('/bo/', privadoRouter);

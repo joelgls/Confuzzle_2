@@ -42,24 +42,35 @@ exports.getById = async (req, res) => {
   }
 }
 
-//criar um comentarios
 exports.create = async (req, res) => {
-  //apanhar os dados enviados
-  const {description, type } = req.body;
-  try {
-      //criar um novo carro
-      const comments = await prisma.Comments.create({
-          data: {
-              description: description,
-              type: type
-          },
-      })
-      //devolve o comentarios criado
-      res.status(201).json(comments)
-  } catch (error) {
-      res.status(400).json({ msg: error.message })
-  }
-}
+    const { description, type } = req.body;
+
+    // Validate that type is a boolean
+    if (typeof type !== 'boolean') {
+        return res.status(400).json({ msg: 'Type must be a boolean' });
+    }
+
+    // Validate that user_id is provided and is a number
+    if (!user_id || typeof user_id !== 'number') {
+        return res.status(400).json({ msg: 'User ID must be a number' });
+    }
+
+    try {
+        const comment = await prisma.comments.create({
+            data: {
+                description: description,
+                type: type,
+
+            },
+        });
+
+        res.status(201).json(comment);
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+};
+
+
 
 //Atualizar um comentario
 exports.update = async (req, res) => {

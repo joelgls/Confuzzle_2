@@ -1,63 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Styles/index.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="shortcut icon" type="image/jpg" href="../Assets/favicon.png"/>
-    <link rel="stylesheet" href="../Scripts/index.js">
-    <title>Index</title>
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="index.html">Confuzzle</a>
-                </div>
-                <div class="nav navbar-nav navbar-right">
-                    <a class="navbar-brand float-right" href="login.html">Login</a>
-                    <a class="navbar-brand float-right" href="Register.html">Register</a>
-                    <a class="navbar-brand float-right" id="dashboard-btn" href="Dashboard.html" style="display: none;">Dashboard</a>
-                </div>
-            </div>
-        </nav>
-    </header>
 
-    <div class="registration-form">
-        <div class="col-md-12 position-relative text-center" style="background-image: url('../Assets/confuzzle-high-res-logo_Copia.png'); background-position: center center; background-repeat: no-repeat; background-size: 90% 90%;">
-            <div class="form-container d-flex justify-content-center">
-                <form id="searchForm">
-                    <div class="conteudo">
-                        <h5>Having problems choosing your project?</h5>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="searchInput" name="text" placeholder="Put where your idea for the project" class="form-control" required>
-                        <button type="submit" class="btn btn-dark" id="searchButton">Search</button>
-                    </div>
-                </form>
-            </div>
-
-            <br><br>
-
-            <div class="mt-4" id="resultsContainer">
-                <button class="close-button" id="clearResultsButton">X</button>
-                <!-- Initial placeholder for search results -->
-                <p id="resultsMessage">Search results will appear here.</p>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="row">
-            <div class="col-md-12">
-                <p>&copy; 2024 Your Website. All rights reserved to Confuzzle</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
         document.addEventListener("DOMContentLoaded", () => {
             console.log("DOM fully loaded and parsed");
 
@@ -142,9 +83,7 @@
                 resultsContainer.appendChild(clearResultsButton); // Re-attach the close button
             }
         });
-    </script>
 
-<script>
     // assume you have a function to check if the user is logged in
     function isLoggedIn() {
         // your logic to check if the user is logged in
@@ -161,9 +100,6 @@
 if (token) {
   document.getElementById("dashboard-btn").style.display = "block";
 }
-</script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
-</html>
+

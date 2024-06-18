@@ -140,11 +140,9 @@ exports.login = async (req, res) => {
 
 // Function to get user by email
 exports.getUserByEmail = async (req, res) => {
-    // Get the email from the request parameters
     const userEmail = req.params.email;
-
+    console.log('Fetching user for email:', userEmail); // Debugging log
     try {
-        // Find user by email
         const user = await prisma.User.findUnique({
             where: { email: userEmail },
         });
@@ -160,3 +158,26 @@ exports.getUserByEmail = async (req, res) => {
         res.status(500).json({ msg: "Internal server error" }); // Send error message with status 500 (Internal Server Error)
     }
 }
+
+
+
+
+// Function to get user by ID
+exports.getUserById = async (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+
+    try {
+        const user = await prisma.User.findUnique({
+            where: { id: userId },
+        });
+
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        res.status(500).json({ msg: "Internal server error" });
+    }
+};

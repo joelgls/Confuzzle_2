@@ -9,9 +9,8 @@ topicRouter.get('/', controller.getAll); //le todos
 topicRouter.get('/:id', controller.getById); //le um topico indicado pelo id
 topicRouter.get('/search/:title', controller.getByTitle);// le um topico pelo titulo
 topicRouter.post('/create', controller.create); //criar um topico
-topicRouter.put('/update', controller.update); //atualizar um topico
 topicRouter.delete('/delete/:id', controller.delete); //apagar um topico
-topicRouter.get('/user/:user_id', controller.getAllByUserId); // Fetch topics by user_id
+topicRouter.get('/user/:userId', controller.getAllByUserId); // Fetch topics by user_id
 
 
 

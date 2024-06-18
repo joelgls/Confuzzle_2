@@ -3,120 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Styles/Discussion.css">
-    <link rel="stylesheet" href="Styles/profile.css">
-
-    <title>Desenvolvimento de um jogo educacional</title>
-    <link rel="shortcut icon" type="image/jpg" href="Assets/favicon.png"/>
-
+    <title>Discussion</title>
+    <link rel="shortcut icon" type="image/jpg" href="../Assets/favicon.png"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
- 
 </head>
 <body>
-    
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="index.html">Confuzzle</a>
                 </div>
-                
                 <div class="nav navbar-nav navbar-right">
-                  <a class="navbar-brand float-right" href="profile.html">Perfil</a>
-                  <a class="navbar-brand float-right" href="Dashboard.html">Dashboard</a>
+                    <a class="navbar-brand float-right" href="profile.html">Perfil</a>
                 </div>
-              </div>
-                   
-
+            </div>
         </nav>
-
-
-
     </header>
 
+    <div style="margin-bottom: 20px;"></div>
+    <center><h2>Discussion</h2></center>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div style="margin-bottom: 200px;"></div>
-            <h2 class="text-center">Desenvolvimento de um jogo educacional para ensinar programação para crianças.</h2>
-            <p class="text-center">Descrição: O objetivo deste projeto é criar um jogo educacional interativo e envolvente que introduza conceitos fundamentais de programação para crianças de forma acessível e divertida. O jogo será desenvolvido com uma abordagem lúdica, utilizando personagens e cenários cativantes que estimulem o interesse e o aprendizado das crianças.</p>
-            
-            <div class="row">
-                <div class="col-md-6">
-                    <div style="margin-bottom: 100px;"></div>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Good Points</th>
-                                <th><button class="btn btn-success btn-sm" onclick="addPoint('good')"><i class="fas fa-plus"></i></button></th>
-                            </tr>
-                        </thead>
-                        <tbody id="goodPointsBody">
-                            <tr>
-                                <td class="text-center"><input type="text" class="form-control" placeholder="Add new point..."></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Facilita a utilização do produto</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Incrementa a satisfação do usuário</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Competitividade no mercado</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title" id="topicTitle"></h5>
+                        <p class="card-text" id="topicDescription"></p>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <div style="margin-bottom: 100px;"></div>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Bad Points</th>
-                                <th><button class="btn btn-danger btn-sm" onclick="addPoint('bad')"><i class="fas fa-plus"></i></button></th>
-                            </tr>
-                        </thead>
-                        <tbody id="badPointsBody">
-                            <tr>
-                                <td class="text-center"><input type="text" class="form-control" placeholder="Add new point..."></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Demanda tempo e recursos</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Risco de erros e bugs</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Pode gerar resistência dos usuários</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <div class="card mb-3">
+                    <div class="card-header">
+                        Good Points
+                        <button class="btn btn-success btn-sm float-end" type="button" data-bs-toggle="modal" data-bs-target="#addGoodModal">
+                            <i class="fa fa-plus"></i> Add Point
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody id="commentsBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        Bad Points
+                        <button class="btn btn-danger btn-sm float-end" type="button" data-bs-toggle="modal" data-bs-target="#addBadModal">
+                            <i class="fa fa-plus"></i> Add Point
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody id="badPointsBody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<footer>
-    <div class="row">
-        <div class="col-md-12">
-            <p>&copy; 2024 Your Website. All rights reserved to Confuzzle</p>
+    <!-- Add Good Point Modal -->
+    <div class="modal fade" id="addGoodModal" tabindex="-1" aria-labelledby="addGoodModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addGoodModalLabel">Add Good Point</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for adding a good point -->
+                    <form id="addGoodForm">
+                        <div class="mb-3">
+                            <label for="goodPointDescription" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="goodPointDescription" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="goodPointUserId" class="form-label">User ID</label>
+                            <input type="text" class="form-control" id="goodPointUserId" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="newComment('good')">Add Point</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</footer>
 
+    <!-- Add Bad Point Modal -->
+    <div class="modal fade" id="addBadModal" tabindex="-1" aria-labelledby="addBadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBadModalLabel">Add Bad Point</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for adding a bad point -->
+                    <form id="addBadForm">
+                        <div class="mb-3">
+                            <label for="badPointDescription" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="badPointDescription" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="badPointUserId" class="form-label">User ID</label>
+                            <input type="text" class="form-control" id="badPointUserId" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="newComment('bad')">Add Point</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+    <script>
+        // Function to retrieve URL parameters
+        const getUrlParameter = (name) => {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+        // Retrieve topic id from URL query parameters
+        const topicId = getUrlParameter('id');
+
+        // Fetch topic details based on the topicId
+        const fetchTopicDetails = async () => {
+            try {
+                const response = await fetch(`http://localhost:4242/api/pgs/topic/${topicId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch topic details');
+                }
+                const topic = await response.json();
+                displayTopicDetails(topic);
+            } catch (error) {
+                console.error('Error fetching topic details:', error);
+                alert('Failed to fetch topic details. Please try again later.');
+            }
+        };
+
+        // Function to display topic details on the page
+        const displayTopicDetails = (topic) => {
+            document.getElementById('topicTitle').textContent = topic.title;
+            document.getElementById('topicDescription').textContent = topic.description;
+            listComments(true); // Fetch and display Good Points by default
+            listComments(false); // Fetch and display Bad Points by default
+        };
+
+        // Fetch and display Comments (Good or Bad Points)
+        const listComments = async (isGood) => {
+            let strHtml = '';
+            try {
+                const response = await fetch(`http://localhost:4242/api/pgs/comments?topicId=${topicId}&type=${isGood}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch ${isGood ? 'good' : 'bad'} points`);
+                }
+                const comments = await response.json();
+                for (const comment of comments) {
+                    strHtml += `<tr><td>${comment.description}</td></tr>`;
+                }
+                document.getElementById(isGood ? 'commentsBody' : 'badPointsBody').innerHTML = strHtml;
+            } catch (error) {
+                console.error(`Error fetching ${isGood ? 'good' : 'bad'} points:`, error);
+                alert(`Failed to fetch ${isGood ? 'good' : 'bad'} points. Please try again later.`);
+            }
+        };
+
+        // Call fetchTopicDetails when the page loads
+        window.onload = fetchTopicDetails;
+
+        const newComment = async (type) => {
+            let description = "";
+            let userId = "";
+            let formId = "";
+
+            if (type === 'good') {
+                const goodPointDescriptionElem = document.getElementById("goodPointDescription");
+                const goodPointUserIdElem = document.getElementById("goodPointUserId");
+
+                if (!goodPointDescriptionElem || !goodPointUserIdElem) {
+                    console.error("Good point elements not found");
+                    return;
+                }
+
+                description = goodPointDescriptionElem.value;
+                userId = goodPointUserIdElem.value;
+                formId = "addGoodForm";
+            } else if (type === 'bad') {
+                const badPointDescriptionElem = document.getElementById("badPointDescription");
+                const badPointUserIdElem = document.getElementById("badPointUserId");
+
+                if (!badPointDescriptionElem || !badPointUserIdElem) {
+                    console.error("Bad point elements not found");
+                    return;
+                }
+
+                description = badPointDescriptionElem.value;
+                userId = badPointUserIdElem.value;
+                formId = "addBadForm";
+            }
+
+            // Proceed with the rest of your function logic
+            console.log(`Description: ${description}, UserId: ${userId}, FormId: ${formId}`);
+        };
+    </script>
 </body>
 </html>

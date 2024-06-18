@@ -15,6 +15,7 @@ userRouter.delete('/delete/:id', controller.delete); //apagar um user
 userRouter.post('/login', controller.login); // Login the user
 
 userRouter.get('/email/:email', controller.getUserByEmail); // Get a user by email
+userRouter.get('/id/:id', controller.getUserById); // Get a user by id
 
 module.exports = userRouter;
 

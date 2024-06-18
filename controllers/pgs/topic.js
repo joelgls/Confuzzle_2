@@ -107,28 +107,7 @@ exports.getAllByUserId = async (req, res) => {
   }
   
 
-//Atualizar um topico
-exports.update = async (req, res) => {
-  const { id, title, description, user_id } = req.body;
 
-  try {
-      //procurar o topico com id e atualizar os dados
-      const topic = await prisma.Topic.update({
-          where: {
-              id: id*1,
-          },
-          data: {
-              title: title,
-              description: description,
-              user_id: user_id
-          },
-      })
-      //devolve o topico atualizado
-      res.status(200).json(topic)
-  } catch (error) {
-      res.status(400).json({ msg: error.message })
-  }
-}
 
 //apagar o topico com id passado
 exports.delete = async (req, res) => {
