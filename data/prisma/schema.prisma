@@ -10,9 +10,8 @@ datasource db {
 model Comments {
     id              Int     @id @default(autoincrement())
     description     String  @db.VarChar(255)  
-    type            Boolean 
+    type            Boolean @default(false)
 }
-
 
 
 model Topic {

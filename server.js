@@ -25,3 +25,10 @@ app.listen(port, () => { // Start the express server
     console.log('Express server listening on port', port); // Log server listening message
     console.log('Port open', port); // Log port open message
 });
+
+// Route to serve the second HTML page
+app.get('/page2/:userId', (req, res) => {
+    const userId = parseInt(req.params.userId);
+    const user = users.find(user => user.id === userId);
+    res.render('page2', { user });
+  });
