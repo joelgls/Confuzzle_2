@@ -26,9 +26,15 @@ app.listen(port, () => { // Start the express server
     console.log('Port open', port); // Log port open message
 });
 
-// Route to serve the second HTML page
-app.get('/page2/:userId', (req, res) => {
-    const userId = parseInt(req.params.userId);
-    const user = users.find(user => user.id === userId);
-    res.render('page2', { user });
+app.get('/profile', (req, res) => {
+    // Retrieve user data from the server-side based on a secure token (not user ID)
+    const user = getUserDataFromToken(req); // Replace with your token retrieval logic
+  
+    if (user) {
+      // User data retrieved successfully
+      res.render('profile', { user });
+    } else {
+      // Handle invalid token or failed user data retrieval
+      res.status(401).send('Unauthorized'); // Send unauthorized response
+    }
   });

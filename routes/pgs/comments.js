@@ -1,5 +1,5 @@
 const commentsRouter = require('express').Router();
-const controller = require('../../controllers/pgs/comments');
+const controller = require('../../controllers/pgs/comments.js');
 
 //testa a ligação à BD
 commentsRouter.get('/testeConn', controller.testConnection); 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -6,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Styles/profile.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Perfil</title>
+    <title>Profile</title>
     <link rel="shortcut icon" type="image/jpg" href="../Assets/favicon.png"/>
 </head>
 <body>
@@ -64,58 +63,63 @@
         </div>
     </footer>
 
-    <script>
-        // JavaScript code as provided above
-    </script>
-
+  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const logoutButton = document.getElementById('logoutButton');
-            logoutButton.addEventListener('click', function() {
-                // Handle logout logic here
-                localStorage.removeItem('lastLogin'); // Remove user session data
-                window.location.href = 'index.html'; // Redirect to the login page or homepage
-            });
-            
-            // Fetch user data and update profile page
-            fetchUserData();
+          const logoutButton = document.getElementById('logoutButton');
+          logoutButton.addEventListener('click', function() {
+            // Handle logout logic here
+            localStorage.removeItem('lastLogin');  // Optional, might be handled server-side
+            window.location.href = 'index.html';  // Redirect to the login page or homepage
+          });
+        
+          // Fetch user data and update profile page (assuming server-side data retrieval)
+          fetchUserData();
         });
-
+        
         async function fetchUserData() {
-            try {
-                const email = getUserEmail(); // Get user email from localStorage
-                const response = await fetch(`http://localhost:4242/api/pgs/user/email/${email}`);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                
-                const userData = await response.json();
-                updateProfilePage(userData); // Update profile page with fetched user data
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                alert('Failed to fetch user data. Please try again later.');
+          try {
+            // Retrieve user data from the server using a secure token (not localStorage)
+            const response = await fetch('http://localhost:4242/api/pgs/user/', {
+              headers: {
+                Authorization: `Bearer ${getTokenFromStorage()}`,  // Include token in Authorization header
+              }
+            });
+        
+            if (!response.ok) {
+              console.error('Error fetching user data:', response.status);
+              const errorMessage = response.statusText || 'Failed to fetch user data.';
+              alert(errorMessage);
+              // Optionally, you can return early to prevent further execution
+              return;
             }
+        
+            const userData = await response.json();
+            updateProfilePage(userData);
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+            const errorMessage = error.message || 'Failed to fetch user data. Please try again later.';
+            alert(errorMessage);  // Provide more specific error message if possible
+          }
         }
-
-        function getUserEmail() {
-            const lastLogin = localStorage.getItem('lastLogin');
-            if (lastLogin) {
-                const userEmail = JSON.parse(lastLogin).email;
-                return userEmail;
-            } else {
-                // Handle case where email is not found (though ideally, this should not happen after a successful login)
-                return null;
-            }
-        }
-
+        
         function updateProfilePage(userData) {
-            document.getElementById('name').textContent = userData.name;
-            document.getElementById('email').textContent = userData.email;
-            document.getElementById('password').textContent = '********'; // Placeholder for password
+          document.getElementById('name').textContent = userData.name;
+          document.getElementById('email').textContent = userData.email;
+          // Don't display password for security reasons
+          document.getElementById('password').textContent = '********';  
         }
-    </script>
+        
+        // Replace with your token retrieval logic (e.g., from sessionStorage or cookies)
+        function getTokenFromStorage() {
+          // Implement logic to retrieve a secure token from storage
+          return 'your-secure-token';  // Replace with actual token retrieval logic
+        }
+        </script>
+        
+    
+
 </body>
 </html>

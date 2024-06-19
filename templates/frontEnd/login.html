@@ -119,7 +119,22 @@ function redirectToPage(userData) {
         window.location.href = "index.html";
     }
 }
-</script>
+
+    function handleLogin(event) {
+      event.preventDefault(); // Prevent default form submission behavior
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Perform login logic here (e.g., send login data to server for verification)
+      
+      if (loginSuccessful) { // Assuming login was successful
+        localStorage.setItem('userEmail', username); // Store username (or email) in localStorage
+        window.location.href = 'profile.html'; // Redirect to profile page
+      } else {
+        // Handle login failure (e.g., display an error message)
+      }
+    }
+  </script>
 
 </body>
 </html>

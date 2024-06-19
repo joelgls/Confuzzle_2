@@ -87,7 +87,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form for adding a good point -->
-                    <form id="addGoodForm">
+                    <form id="addGoodForm" onsubmit="event.preventDefault();">
                         <div class="mb-3">
                             <label for="goodPointDescription" class="form-label">Description</label>
                             <input type="text" class="form-control" id="goodPointDescription" required>
@@ -96,7 +96,11 @@
                             <label for="goodPointUserId" class="form-label">User ID</label>
                             <input type="text" class="form-control" id="goodPointUserId" required>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="newComment('good')">Add Point</button>
+                        <div class="mb-3">
+                            <input type="checkbox" id="goodPointType" name="type" value="1">
+                            <label for="goodPointType">Good Point</label>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="addPoint(true)">Add Point</button>
                     </form>
                 </div>
             </div>
@@ -113,7 +117,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form for adding a bad point -->
-                    <form id="addBadForm">
+                    <form id="addBadForm" onsubmit="event.preventDefault();">
                         <div class="mb-3">
                             <label for="badPointDescription" class="form-label">Description</label>
                             <input type="text" class="form-control" id="badPointDescription" required>
@@ -122,7 +126,11 @@
                             <label for="badPointUserId" class="form-label">User ID</label>
                             <input type="text" class="form-control" id="badPointUserId" required>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="newComment('bad')">Add Point</button>
+                        <div class="mb-3">
+                            <input type="checkbox" id="badPointType" name="type" value="0">
+                            <label for="badPointType">Bad Point</label>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="addPoint(false)">Add Point</button>
                     </form>
                 </div>
             </div>
@@ -167,11 +175,11 @@
             listComments(false); // Fetch and display Bad Points by default
         };
 
-        // Fetch and display Comments (Good or Bad Points)
+        // Function to list comments (good or bad points)
         const listComments = async (isGood) => {
             let strHtml = '';
             try {
-                const response = await fetch(`http://localhost:4242/api/pgs/comments?topicId=${topicId}&type=${isGood}`);
+                const response = await fetch(`http://localhost:4242/api/pgs/comments?type=${isGood ? 'good' : 'bad'}`);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch ${isGood ? 'good' : 'bad'} points`);
                 }
@@ -186,43 +194,73 @@
             }
         };
 
-        // Call fetchTopicDetails when the page loads
-        window.onload = fetchTopicDetails;
+        // Function to add a Good or Bad Point
+        const addPoint = async (isGood) => {
+            const descriptionElem = isGood ? document.getElementById("goodPointDescription") : document.getElementById("badPointDescription");
+            const userIdElem = isGood ? document.getElementById("goodPointUserId") : document.getElementById("badPointUserId");
+            const type = isGood ? document.getElementById("goodPointType").checked : document.getElementById("badPointType").checked;
 
-        const newComment = async (type) => {
-            let description = "";
-            let userId = "";
-            let formId = "";
-
-            if (type === 'good') {
-                const goodPointDescriptionElem = document.getElementById("goodPointDescription");
-                const goodPointUserIdElem = document.getElementById("goodPointUserId");
-
-                if (!goodPointDescriptionElem || !goodPointUserIdElem) {
-                    console.error("Good point elements not found");
-                    return;
-                }
-
-                description = goodPointDescriptionElem.value;
-                userId = goodPointUserIdElem.value;
-                formId = "addGoodForm";
-            } else if (type === 'bad') {
-                const badPointDescriptionElem = document.getElementById("badPointDescription");
-                const badPointUserIdElem = document.getElementById("badPointUserId");
-
-                if (!badPointDescriptionElem || !badPointUserIdElem) {
-                    console.error("Bad point elements not found");
-                    return;
-                }
-
-                description = badPointDescriptionElem.value;
-                userId = badPointUserIdElem.value;
-                formId = "addBadForm";
+            if (!descriptionElem || !userIdElem) {
+                console.error("Point elements not found");
+                return;
             }
 
-            // Proceed with the rest of your function logic
-            console.log(`Description: ${description}, UserId: ${userId}, FormId: ${formId}`);
+            const description = descriptionElem.value;
+            const userId = userIdElem.value;
+
+            await saveComment(description, userId, type); // Save the comment
         };
+
+        // Function to save the comment (both good and bad points)
+        const saveComment = async (description, userId, isGood) => {
+            try {
+                const type = isGood ? 'good' : 'bad'; // Define the type based on isGood
+
+                const response = await fetch('http://localhost:4242/api/pgs/comments/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        description: description,
+                        user_id: userId,
+                        type: type,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to add ${type} point`);
+                }
+
+                console.log(`Received data - Description: ${description}, UserId: ${userId}, Type: ${type}`);
+
+                // Clear input fields after successful submission
+                clearInputFields(isGood);
+
+                // Refresh comments list
+                listComments(isGood);
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message);
+            }
+        };
+
+        // Function to clear input fields after successful submission
+        const clearInputFields = (isGood) => {
+            if (isGood) {
+                document.getElementById("goodPointDescription").value = "";
+                document.getElementById("goodPointUserId").value = "";
+                document.getElementById("goodPointType").checked = false;
+            } else {
+                document.getElementById("badPointDescription").value = "";
+                document.getElementById("badPointUserId").value = "";
+                document.getElementById("badPointType").checked = false;
+            }
+        };
+
+        // Call fetchTopicDetails when the page loads
+        window.onload = fetchTopicDetails;
     </script>
+
 </body>
 </html>

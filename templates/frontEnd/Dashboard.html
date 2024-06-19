@@ -112,38 +112,38 @@
         listTopic();
 
         const newTopic = async () => {
-    const dados = {
-        title: document.getElementById("mTitle").value,
-        description: document.getElementById("mDescription").value,
-        user_id: 3, // TODO: Retrieve user_id from localStorage or another source
+        const dados = {
+            title: document.getElementById("mTitle").value,
+            description: document.getElementById("mDescription").value,
+            user_id: 3, // TODO: Retrieve user_id from localStorage or another source
+        };
+
+        try {
+            const response = await fetch("http://localhost:4242/api/pgs/topic/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dados),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("New topic created:", data); // Log the response data for debugging
+            alert(`The topic with the title "${dados.title}" was added successfully!`);
+            listTopic(); // Refresh the list of topics
+            document.getElementById("addTopicForm").reset(); // Reset the form
+            // Optional: Close the modal using Bootstrap's modal API if you are using it
+            const modalElement = document.getElementById('addModal');
+            if (modalElement) {
+                new bootstrap.Modal(modalElement).hide(); // Hide the modal
+            }
+            } catch (error) {
+            console.error("Error creating new topic:", error);
+            alert("Failed to create new topic. Please try again later.");
+        }
     };
-
-    try {
-        const response = await fetch("http://localhost:4242/api/pgs/topic/create", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dados),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("New topic created:", data); // Log the response data for debugging
-        alert(`The topic with the title "${dados.title}" was added successfully!`);
-        listTopic(); // Refresh the list of topics
-        document.getElementById("addTopicForm").reset(); // Reset the form
-        // Optional: Close the modal using Bootstrap's modal API if you are using it
-        const modalElement = document.getElementById('addModal');
-        if (modalElement) {
-            new bootstrap.Modal(modalElement).hide(); // Hide the modal
-        }
-    } catch (error) {
-        console.error("Error creating new topic:", error);
-        alert("Failed to create new topic. Please try again later.");
-    }
-};
 
 
         const deleteTopic = async (id) => {
@@ -166,13 +166,15 @@
         };
 
         const redirectToOpinions = (id) => {
-            alert("AAAAAAAAAAAAAAAAAAA");
             window.location.href = `Discussion.html?id=${id}`;
         };
 
         const redirectToProfile = (id) => {
             window.location.href = `profile.html?id=${id}`;
         };
+
     </script>
+
+
 </body>
 </html>

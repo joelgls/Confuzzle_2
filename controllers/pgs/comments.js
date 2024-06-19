@@ -43,7 +43,9 @@ exports.getById = async (req, res) => {
 }
 
 exports.create = async (req, res) => {
-    const { description, type } = req.body;
+    const { description, type, user_id } = req.body;
+
+    console.log(`Received data - Description: ${description}, UserId: ${user_id}, Type: ${type}`);
 
     // Validate that type is a boolean
     if (typeof type !== 'boolean') {
@@ -56,11 +58,11 @@ exports.create = async (req, res) => {
     }
 
     try {
-        const comment = await prisma.comments.create({
+        const comment = await prisma.Comments.create({
             data: {
                 description: description,
+                user_id: user_id,
                 type: type,
-
             },
         });
 
@@ -69,6 +71,10 @@ exports.create = async (req, res) => {
         res.status(400).json({ msg: error.message });
     }
 };
+
+
+
+
 
 
 
